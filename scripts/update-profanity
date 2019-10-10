@@ -6,7 +6,7 @@ export PKG_CONFIG_PATH=$HOME/local/lib/pkgconfig:/usr/lib/pkgconfig
 if [[ -e .last-installed-rev ]]; then
 	rev=$(<.last-installed-rev)
 else
-	rev=$(git rev-parse HEAD) || exit $?
+	rev=NONE || exit $?
 fi
 git pull --ff-only || exit $?
 if [[ $rev != $(git rev-parse HEAD) ]]; then
