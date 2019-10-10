@@ -11,7 +11,9 @@ fi
 git pull --ff-only || exit $?
 if [[ $rev != $(git rev-parse HEAD) ]]; then
 	../libmesode/update || exit $?
-	make clean || exit $?
+	if [[ -e Makefile ]]; then
+		make clean || exit $?
+	fi
 	./configure CFLAGS='-g3 -Og' CXXFLAGS='-g3 -Og' --prefix=$HOME/local --enable-omemo --disable-notifications --disable-icons || exit $?
 	make -j8 LDFLAGS=-lm || exit $?
 	make install || exit $?

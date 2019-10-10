@@ -10,7 +10,9 @@ else
 fi
 git pull --ff-only || exit $?
 if [[ $rev != $(git rev-parse HEAD) ]]; then
-	make clean || exit $?
+	if [[ -e Makefile ]]; then
+		make clean || exit $?
+	fi
 	./configure --prefix=$HOME/local|| exit $?
 	make -j8 CFLAGS='-g -O0' || exit $?
 	make install || exit $?
