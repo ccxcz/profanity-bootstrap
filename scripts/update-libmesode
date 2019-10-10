@@ -1,0 +1,13 @@
+#!/bin/zsh
+setopt no_unset
+set -x
+cd $0:h || exit $?
+export PKG_CONFIG_PATH=$HOME/local/lib/pkgconfig:/usr/lib/pkgconfig
+rev=$(git rev-parse HEAD) || exit $?
+git pull --ff-only || exit $?
+if [[ $rev != $(git rev-parse HEAD) ]]; then
+	make clean || exit $?
+	./configure --prefix=$HOME/local|| exit $?
+	make -j8 CFLAGS='-g -O0' || exit $?
+	make install || exit $?
+fi

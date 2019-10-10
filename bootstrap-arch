@@ -1,0 +1,2 @@
+#!/bin/sh
+exec pacman -S --needed autoconf autoconf-archive automake base-devel check cmake cmocka curl doxygen expat gcc git gpgme gtk2 libgcrypt libmicrohttpd libnotify libotr libtool libxss make openssl pkg-config python wget zsh

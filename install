@@ -1,0 +1,39 @@
+#!/bin/zsh
+setopt no_unset warn_create_global
+set -x
+cd $0:h || exit $?
+
+die() {
+	printf '%s\n' "$@" >&2
+	exit 1
+}
+
+checkout() {
+	local src dst
+	src=$1; shift
+	dst=$1; shift
+
+	if ! [[ -d $dst/.git ]]; then
+		git clone --depth=1 -- $src $dst || exit $?
+	fi
+	[[ -d $dst/.git ]] || die "Git clone failed from ${(qqq)src}"
+}
+
+linkupdate() {
+	local target lnk
+	target=$1; shift
+	lnk=$1; shift
+
+	if ! [[ -L $lnk ]]; then
+		ln -s $target $lnk || exit $?
+	fi
+	[[ -L $lnk ]] || die "Failed to symlink ${(qqq)target} at ${(qqq)lnk}"
+}
+
+checkout 'https://github.com/profanity-im/libmesode' libmesode
+linkupdate ../scripts/update-libmesode libmesode/update
+
+checkout 'https://github.com/profanity-im/profanity' profanity
+linkupdate ../scripts/update-profanity profanity/update
+
+exec profanity/update

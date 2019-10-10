@@ -1,0 +1,2 @@
+#!/bin/sh
+exec apt-get install zsh build-essential libssl-dev libexpat1-dev libncursesw5-dev libglib2.0-dev libnotify-dev libcurl3-dev libxss-dev libotr5-dev libgpgme11-dev autoconf-archive expect-dev tcl-dev libtool python-dev libgtk2.0-dev automake autoconf libtool pkg-config libsignal-protocol-c-dev libgcrypt-dev libreadline-dev

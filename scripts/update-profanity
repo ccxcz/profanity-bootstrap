@@ -1,0 +1,19 @@
+#!/bin/zsh
+setopt no_unset
+set -x
+cd $0:h || exit $?
+export PKG_CONFIG_PATH=$HOME/local/lib/pkgconfig:/usr/lib/pkgconfig
+if [[ -e .last-installed-rev ]]; then
+	rev=$(<.last-installed-rev)
+else
+	rev=$(git rev-parse HEAD) || exit $?
+fi
+git pull --ff-only || exit $?
+if [[ $rev != $(git rev-parse HEAD) ]]; then
+	../libmesode/update || exit $?
+	make clean || exit $?
+	./configure CFLAGS='-g3 -Og' CXXFLAGS='-g3 -Og' --prefix=$HOME/local --enable-omemo --disable-notifications --disable-icons || exit $?
+	make -j8 LDFLAGS=-lm || exit $?
+	make install || exit $?
+	git rev-parse HEAD > .last-installed-rev
+fi
