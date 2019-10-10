@@ -14,6 +14,9 @@ if [[ $rev != $(git rev-parse HEAD) ]]; then
 	if [[ -e Makefile ]]; then
 		make clean || exit $?
 	fi
+	if [[ -n configure || configure.ac -nt configure ]]; then
+		./bootstrap.sh
+	fi
 	./configure CFLAGS='-g3 -Og' CXXFLAGS='-g3 -Og' --prefix=$HOME/local --enable-omemo --disable-notifications --disable-icons || exit $?
 	make -j8 LDFLAGS=-lm || exit $?
 	make install || exit $?

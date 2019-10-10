@@ -13,6 +13,9 @@ if [[ $rev != $(git rev-parse HEAD) ]]; then
 	if [[ -e Makefile ]]; then
 		make clean || exit $?
 	fi
+	if [[ -n configure || configure.ac -nt configure ]]; then
+		./bootstrap.sh
+	fi
 	./configure --prefix=$HOME/local|| exit $?
 	make -j8 CFLAGS='-g -O0' || exit $?
 	make install || exit $?
